@@ -1,0 +1,65 @@
+Example 1:
+
+Input: A = 4.
+Output:
+
+4 4 4 4 4 4 4 
+4 3 3 3 3 3 4 
+4 3 2 2 2 3 4 
+4 3 2 1 2 3 4 
+4 3 2 2 2 3 4 
+4 3 3 3 3 3 4 
+4 4 4 4 4 4 4 
+Example 2:
+
+Input: A = 3.
+Output:
+
+3 3 3 3 3 
+3 2 2 2 3 
+3 2 1 2 3 
+3 2 2 2 3 
+3 3 3 3 3 
+The outermost rectangle is formed by A, then the next outermost is formed by A-1 and so on.
+
+You will be given A as an argument to the function you need to implement, and you need to return a 2D array.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+public class Solution {
+	public ArrayList<ArrayList<Integer>> prettyPrint(int a) {
+	    ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+	    for (int i = 0; i < 2 * a - 1; i++) {
+	        res.add(new ArrayList<Integer>());
+	    }
+	    draw(res, a, 0);
+	    copy(res, a);
+	    return res;
+	}
+	
+	private void draw(ArrayList<ArrayList<Integer>> res, int a, int x) {
+	    if (a < 1) return;
+	    for (int i = 0; i < a; i++) {
+	        res.get(x).add(a);
+	    }
+	    for (int i = 1; i < a; i++) {
+	        res.get(i + x).add(a);
+	    }
+	    draw(res, a - 1, x + 1);
+	}
+  private void copy(ArrayList<ArrayList<Integer>> res, int a) {
+    for (int j = 0; j < a; j++) {
+        for (int i = 1; i < a; i++) {
+            int val = res.get(j).get(a - 1 - i);
+            res.get(j).add(val);
+        }
+    }
+
+    for (int j = 1; j < a; j++) {
+        for (int i = 0; i < res.size(); i++) {
+            int val = res.get(a - 1 - j).get(i);
+            res.get(a - 1 + j).add(val);
+        }
+    }
+  }
+}
