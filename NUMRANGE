@@ -17,64 +17,22 @@ public class Solution {
 	public int numRange(ArrayList<Integer> a, int b, int c) {
 	    if (a == null || a.size() == 0 || b > c) return 0;
 	    int res = 0;
-	    int[] sum = new int[a.size()];
-	    sum[0] = a.get(0);
-	    if (sum[0] >= b && sum[0] <= c) res++;
-	    for (int i = 1; i < a.size(); i++) {
-	        if (a.get(i) >= b && a.get(i) <= c) res++;
-            sum[i] = sum[i - 1] + a.get(i);
-            if (sum[i] >= b && sum[i] <= c) 
-                res++;
-	    }
-	    for (int j = 0; j < a.size() - 2; j++) {
-	        int left = 2;
-	        int right = a.size() - 1 - j;
-	        int mid, temp;
-	        while (left <= right) {
-	            mid = left + (right - left) / 2;
-	            temp = sum[j + mid] - sum[j];
-	            if (temp < b) {
-	                left = mid + 1;
-	            } else if (temp > c) {
-	                right = mid - 1;
-	            } else {
-	                res += findRight(j, mid, right, c, sum) - 
-	                    findLeft(j, left, mid, b, sum) + 1;
-	                break;
+	    int sum = 0;
+	    for (int i = 0; i < a.size(); i++) {
+	        sum += a.get(i);
+	        int j = i + 1;
+	        while (sum <= c) {
+	            
+	            if (sum >= b) {
+	                res++;
 	            }
-	        }
+	            if (j >= a.size()) break;
+	            sum += a.get(j);
+	            j++;
+	        } 
+	        sum = 0;
 	    }
-      return res;
-	}
-	
-	private int findLeft(final int j, int left, int right, final int b, int[] sum) {
-	    int mid, temp;
-	    while (left + 1 < right) {
-            mid = left + (right - left) / 2;
-            temp = sum[j + mid] - sum[j];
-            if (temp < b) {
-                left = mid;
-            } else {
-                right = mid;
-            }
-        }
-        temp = sum[j + left] - sum[j];
-        if (temp < b) return right;
-        else return left;
-	}
-	private int findRight(final int j, int left, int right, final int c, int[] sum) {
-	    int mid, temp;
-	    while (left + 1 < right) {
-            mid = left + (right - left) / 2;
-            temp = sum[j + mid] - sum[j];
-            if (temp > c) {
-                right = mid;
-            } else {
-                left = mid;
-            }
-        }
-        temp = sum[j + right] - sum[j];
-        if (temp > c) return left;
-        else return right;
+	    
+	    return res;
 	}
 }
